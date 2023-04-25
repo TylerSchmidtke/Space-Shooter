@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private int lives = 3;
+    [SerializeField] private int lives = 3;
     private const float Speed = 5.0f;
     [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private SpawnManager spawnManager;
     private const float LaserOffset = 0.8f;
     public float fireRate = 0.5f;
     private float _nextFire = -1f;
@@ -15,18 +15,25 @@ public class Player : MonoBehaviour
     public void Damage()
     {
         lives--;
-        if (lives < 1)
+        if (lives > 1)
         {
-            Destroy(this.gameObject);
-            Debug.Log("Player destroyed");
+            Debug.Log("Player damaged");
+            return;
         }
+        Destroy(this.gameObject);
+        if (spawnManager != null)
+        {
+            spawnManager.OnPlayerDeath();
+        }
+        Debug.Log("Player destroyed");
     }
-    
+
     // Start is called before the first frame update
     private void Start()
     {
         // take the current position and assign the start position
         transform.position = new Vector3(0, 0, 0);
+        spawnManager = GameObject.Find(Obj.SpawnManager).GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame

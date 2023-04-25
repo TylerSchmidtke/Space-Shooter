@@ -1,17 +1,9 @@
-using System;
 using Environment;
-using Unity.VisualScripting;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
     private const float Speed = 4.0f;
-
-    // Start is called before the first frame update
-    private void Start()
-    {
-    }
 
     // Update is called once per frame
     private void Update()
@@ -21,7 +13,7 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y < Level.BottomBound)
         {
-            transform.position = new Vector3(Random.Range(Level.LeftBound, Level.RightBound), Level.TopBound, 0);
+            transform.position = SpawnManager.GetRandomSpawnPosition();
         }
     }
 
@@ -39,8 +31,7 @@ public class Enemy : MonoBehaviour
                 {
                     player.Damage();
                 }
-
-                Debug.Log("Player damaged");
+                
                 break;
             default:
                 Debug.Log("Collision with unknown object");
